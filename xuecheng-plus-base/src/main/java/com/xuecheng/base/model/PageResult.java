@@ -1,11 +1,14 @@
 package com.xuecheng.base.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * 分页结果信息
  */
+@Data
 public class PageResult<T> implements Serializable {
     // 数据列表
     private List<T> items;
@@ -26,5 +29,6 @@ public class PageResult<T> implements Serializable {
         this.pageSize = pageSize;
     }
 
-
+    public PageResult() {
+    }
 }
