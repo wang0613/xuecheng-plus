@@ -6,8 +6,10 @@ import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.content.mapper.CourseBaseMapper;
 import com.xuecheng.content.mapper.CourseCategoryMapper;
+import com.xuecheng.content.mapper.TeachplanMapper;
 import com.xuecheng.content.model.dto.CourseCategoryTreeDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
+import com.xuecheng.content.model.dto.TeachplanDto;
 import com.xuecheng.content.model.po.CourseBase;
 import com.xuecheng.content.service.CourseCategoryService;
 import org.apache.commons.lang3.StringUtils;
@@ -28,14 +30,18 @@ public class ContentMapperTest {
     @Autowired
     private CourseCategoryService courseCategoryService;
 
+    @Autowired
+    private TeachplanMapper teachplanMapper;
+
+
     /**
      * 根据传入的节点的id 查询节点的信息
      * @return
      */
     @Test
     void queryTreeNodes() {
-        List<CourseCategoryTreeDto> categoryTreeDtos = courseCategoryService.queryTreeNodes("1");
-        System.out.println(categoryTreeDtos);
+        List<TeachplanDto> teachplanDtos = teachplanMapper.queryTreeNode(117L);
+        System.out.println(teachplanDtos.toString());
 
     }
 

@@ -5,6 +5,7 @@ import com.xuecheng.base.model.PageResult;
 import com.xuecheng.content.mapper.CourseBaseMapper;
 import com.xuecheng.content.model.dto.AddCourseDto;
 import com.xuecheng.content.model.dto.CourseBaseInfoDto;
+import com.xuecheng.content.model.dto.EditCourseDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,20 @@ public interface CourseBaseService {
      * @return
      */
     CourseBaseInfoDto createCourseBase(long companyId, AddCourseDto addCourseDto);
+
+    /**
+     * 根据课程id 查询信息
+     * @param courseId
+     * @return
+     */
+    CourseBaseInfoDto getCourseInfoDto(Long courseId);
+
+    /**
+     * 更新课程 基本信息(base和market两张表)
+     * @param companyId 公司id
+     * @param editCourseDto 新的数据
+     * @return
+     */
+    CourseBaseInfoDto updateCourseBase(Long companyId, EditCourseDto editCourseDto);
 
 }
