@@ -94,7 +94,7 @@ SELECT
             m1.id teachplanMeidaId,
             m1.media_id mediaId
 FROM
-teachplan one INNER JOIN teachplan two
+teachplan one LEFT JOIN teachplan two
 on one.id=two.parentid
 left join teachplan_media m1
 on m1.teachplan_id = two.id

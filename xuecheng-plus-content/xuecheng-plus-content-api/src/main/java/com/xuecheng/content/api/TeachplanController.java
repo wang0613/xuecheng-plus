@@ -1,13 +1,12 @@
 package com.xuecheng.content.api;
 
+import com.xuecheng.content.model.dto.SaveTeachplanDto;
 import com.xuecheng.content.model.dto.TeachplanDto;
 import com.xuecheng.content.service.TeachplanService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,12 +26,33 @@ public class TeachplanController {
         return teachplanService.getTeachNodes(courseId);
     }
 
-//    http://localhost:8601/api/content/teachplan
-//{
-//    "courseId": 117,
-//        "parentid": 0,
-//        "grade": 1,
-//        "pname": "新章名称 [点击修改]"
-//}
+    /**
+     * 新增或者修改 课程计划
+     *
+     * @param teachplanDto
+     */
+    @ApiOperation("新增课程计划")
+    @PostMapping("/teachplan")
+    public void createTeachPlan(@RequestBody SaveTeachplanDto teachplanDto) {
+        teachplanService.createTeachPlan(teachplanDto);
+    }
+
+    /**
+     * 删除章或者是节（id）
+     *
+     * @param id 计划的id
+     */
+    @ApiOperation("删除课程计划")
+    @DeleteMapping("/teachplan/{id}")
+    public void deleteTeachPlan(@PathVariable Long id) {
+        teachplanService.deleteTeachPlan(id);
+    }
+
+    @ApiOperation("调整顺序")
+    @PostMapping("/teachplan/{movedown}/{id}")
+    public void move(@PathVariable(value = "movedown") String mode, @PathVariable(value = "id") Long id) {
+        teachplanService.move(mode, id);
+    }
+
 
 }

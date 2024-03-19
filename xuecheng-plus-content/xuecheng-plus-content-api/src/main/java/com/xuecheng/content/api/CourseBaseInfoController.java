@@ -44,7 +44,7 @@ public class CourseBaseInfoController {
     @ApiOperation("新增课程接口")
     @PostMapping("/course")
     public CourseBaseInfoDto createCourseBase(@RequestBody @Validated({
-        ValidationGroups.Inster.class})AddCourseDto addCourseDto) {
+            ValidationGroups.Inster.class}) AddCourseDto addCourseDto) {
 
         //1:获取所登录的机构的id
         long companyId = 1232141425L;
@@ -53,6 +53,7 @@ public class CourseBaseInfoController {
 
     /**
      * 根据课程id 查询课程的信息
+     *
      * @param courseId 课程id
      * @return
      */
@@ -65,6 +66,7 @@ public class CourseBaseInfoController {
 
     /**
      * 根据课程id更新课程信息接口
+     *
      * @param editCourseDto
      * @return
      */
@@ -73,8 +75,14 @@ public class CourseBaseInfoController {
     public CourseBaseInfoDto updateCourseInfo(@RequestBody @Validated({
             ValidationGroups.Update.class}) EditCourseDto editCourseDto) {
 
-        Long companyId= 1232141425L;
-        return courseBaseService.updateCourseBase(companyId,editCourseDto);
+        Long companyId = 1232141425L;
+        return courseBaseService.updateCourseBase(companyId, editCourseDto);
     }
 
+    //http://localhost:8601/api/content/course/22
+    @ApiOperation("根据课程id删除所关联信息")
+    @DeleteMapping("/course/{id}")
+    public void deleteCourse(@PathVariable Long id) {
+        courseBaseService.deleteCourse(id);
+    }
 }

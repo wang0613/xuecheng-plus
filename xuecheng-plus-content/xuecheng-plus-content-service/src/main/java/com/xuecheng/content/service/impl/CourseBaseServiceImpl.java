@@ -197,4 +197,16 @@ public class CourseBaseServiceImpl implements CourseBaseService {
             return courseMarketMapper.updateById(courseMarketObj);
         }
     }
+
+    /**
+     *
+     * 删除课程需要删除课程相关的基本信息、营销信息、课程计划、课程教师信息。
+     * @param id 课程id
+     */
+    @Transactional
+    @Override
+    public void deleteCourse(Long id) {
+
+        //TODO:删除课程相关的基本信息、营销信息、课程计划、课程教师信息
+    }
 }
