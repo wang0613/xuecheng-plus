@@ -79,7 +79,6 @@ public class CourseBaseInfoController {
         return courseBaseService.updateCourseBase(companyId, editCourseDto);
     }
 
-    //http://localhost:8601/api/content/course/22
     @ApiOperation("根据课程id删除所关联信息")
     @DeleteMapping("/course/{id}")
     public void deleteCourse(@PathVariable Long id) {

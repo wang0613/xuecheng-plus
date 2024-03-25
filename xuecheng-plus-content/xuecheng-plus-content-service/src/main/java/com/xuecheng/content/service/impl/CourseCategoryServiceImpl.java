@@ -6,7 +6,6 @@ import com.xuecheng.content.service.CourseCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,6 @@ public class CourseCategoryServiceImpl implements CourseCategoryService {
 
     /**
      * 根据传入的节点的id 查询节点的信息
-     *
      * @param id
      * @return
      */

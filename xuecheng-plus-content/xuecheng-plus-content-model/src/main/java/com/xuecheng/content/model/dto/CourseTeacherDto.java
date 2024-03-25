@@ -20,6 +20,7 @@ public class CourseTeacherDto {
     private String teacherName;
     private String position;
     private String introduction;
+    private String photograph;
 
 
 }

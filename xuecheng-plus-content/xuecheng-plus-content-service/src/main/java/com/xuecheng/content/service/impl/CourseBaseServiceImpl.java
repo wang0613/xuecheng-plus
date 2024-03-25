@@ -107,6 +107,7 @@ public class CourseBaseServiceImpl implements CourseBaseService {
 
     /**
      * 根据课程id 从数据库中查询详细信息
+     *
      * @param courseId
      * @return
      */
@@ -120,22 +121,27 @@ public class CourseBaseServiceImpl implements CourseBaseService {
 
         //组装到一起
         CourseBaseInfoDto dto = new CourseBaseInfoDto();
-        BeanUtils.copyProperties(courseBase, dto);
-        BeanUtils.copyProperties(courseMarket, dto);
-
+        if (courseBase != null) {
+            BeanUtils.copyProperties(courseBase, dto);
+        }
+        if (courseMarket != null) {
+            BeanUtils.copyProperties(courseMarket, dto);
+        }
         //3：从数据库中查询到Category 并设置 stName
         String st = courseBase.getSt();
         String mt = courseBase.getMt();
-
+        CourseCategory st_courseCategory = courseCategoryMapper.selectById(st);
+        CourseCategory mt_courseCategory = courseCategoryMapper.selectById(mt);
         //查询出分类名称  并设置为St和Mt名称
-        dto.setStName(courseCategoryMapper.selectById(st).getName());
-        dto.setMtName(courseCategoryMapper.selectById(mt).getName());
+        dto.setStName(st_courseCategory.getName());
+        dto.setMtName(mt_courseCategory.getName());
         return dto;
     }
 
     /**
      * 更新课程的基本信息
-     * @param companyId 公司id
+     *
+     * @param companyId     公司id
      * @param editCourseDto 新的数据
      * @return
      */
@@ -145,23 +151,23 @@ public class CourseBaseServiceImpl implements CourseBaseService {
         Long courseId = editCourseDto.getId();
         //从数据库中查询出课程的companyId 如果与当前的公司id 不同 则认为本课程不属于当前机构
         CourseBase courseBase = courseBaseMapper.selectById(courseId);
-        if(courseBase == null){
+        if (courseBase == null) {
             XueChengPlusException.cast("课程不存在");
         }
-        if(!courseBase.getCompanyId().equals(companyId)){
+        if (!courseBase.getCompanyId().equals(companyId)) {
             XueChengPlusException.cast("本机构只能修改本机构的课程");
         }
 
         //1:封装数据（course,market）
-        BeanUtils.copyProperties(editCourseDto,courseBase); //将传入的数据 放入courseBase
+        BeanUtils.copyProperties(editCourseDto, courseBase); //将传入的数据 放入courseBase
         courseBase.setChangeDate(LocalDateTime.now()); //修改更新时间
 
         CourseMarket market = new CourseMarket();
-        BeanUtils.copyProperties(editCourseDto,market);
+        BeanUtils.copyProperties(editCourseDto, market);
 
         //2:更新数据
         int i = courseBaseMapper.updateById(courseBase);
-        if(i <= 0){
+        if (i <= 0) {
             XueChengPlusException.cast("更新课程信息失败！");
         }
         int market1 = saveCourseMarket(market);//更新营销数据
@@ -172,35 +178,36 @@ public class CourseBaseServiceImpl implements CourseBaseService {
 
     /**
      * 如果存在营销信息则更新 如果不存在 则删除
+     *
      * @param courseMarketNew 待新增的课程营销信息
      * @return
      */
     public int saveCourseMarket(CourseMarket courseMarketNew) {
         //收费规则
         String charge = courseMarketNew.getCharge();
-        if(StringUtils.isBlank(charge)){
+        if (StringUtils.isBlank(charge)) {
             throw new RuntimeException("收费规则没有选择");
         }
         //收费规则为收费
-        if(charge.equals("201001")){
-            if(courseMarketNew.getPrice() == null || courseMarketNew.getPrice().floatValue()<=0){
+        if (charge.equals("201001")) {
+            if (courseMarketNew.getPrice() == null || courseMarketNew.getPrice().floatValue() <= 0) {
                 throw new RuntimeException("课程为收费价格不能为空且必须大于0");
             }
         }
         //根据id从课程营销表查询
         CourseMarket courseMarketObj = courseMarketMapper.selectById(courseMarketNew.getId());
-        if(courseMarketObj == null){
+        if (courseMarketObj == null) {
             return courseMarketMapper.insert(courseMarketNew);
-        }else{
-            BeanUtils.copyProperties(courseMarketNew,courseMarketObj);
+        } else {
+            BeanUtils.copyProperties(courseMarketNew, courseMarketObj);
             courseMarketObj.setId(courseMarketNew.getId());
             return courseMarketMapper.updateById(courseMarketObj);
         }
     }
 
     /**
-     *
      * 删除课程需要删除课程相关的基本信息、营销信息、课程计划、课程教师信息。
+     *
      * @param id 课程id
      */
     @Transactional

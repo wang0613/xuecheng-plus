@@ -63,8 +63,6 @@
                 <result column="two_coursePubId" property="coursePubId"/>
             </association>
         </collection>
-
-
     </resultMap>
 
     <!--    根据课程id 查询课程计划 -->

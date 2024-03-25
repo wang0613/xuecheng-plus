@@ -47,8 +47,7 @@ public class CourseTeacherServiceImpl implements CourseTeacherService {
             //2：新增
             BeanUtils.copyProperties(courseTeacherDto, courseTeacher);
             courseTeacher.setCreateDate(LocalDateTime.now());
-            //TODO：图片名称
-            courseTeacher.setPhotograph("ceshiyongli");
+            courseTeacher.setPhotograph(courseTeacherDto.getPhotograph());
 
             courseTeacherMapper.insert(courseTeacher);
         } else {

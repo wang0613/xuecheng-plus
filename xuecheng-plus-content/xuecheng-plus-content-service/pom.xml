@@ -60,6 +60,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
+        <!--        sdk消息队列-->
+        <dependency>
+            <groupId>com.xuecheng</groupId>
+            <artifactId>xuecheng-plus-message-sdk</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
 
     </dependencies>
