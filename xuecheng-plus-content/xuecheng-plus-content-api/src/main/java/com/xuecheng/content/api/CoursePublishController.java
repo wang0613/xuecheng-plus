@@ -58,6 +58,7 @@ public class CoursePublishController {
     @ResponseBody
     @PostMapping("/coursepublish/{courseId}")
     public void coursepublish(@PathVariable("courseId") Long courseId) {
+        coursePublishService.publish(courseId);
 
     }
 
