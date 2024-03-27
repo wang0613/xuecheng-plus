@@ -1,12 +1,19 @@
 package com.xuecheng.content.service.jobhandler;
 
+import com.xuecheng.base.exception.XueChengPlusException;
+import com.xuecheng.content.feignclient.MediaServiceClient;
+import com.xuecheng.content.service.CoursePublishService;
 import com.xuecheng.messagesdk.model.po.MqMessage;
 import com.xuecheng.messagesdk.service.MessageProcessAbstract;
 import com.xuecheng.messagesdk.service.MqMessageService;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.File;
 
 /**
  * 课程发布任务类
@@ -15,9 +22,12 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class CoursePublishTask extends MessageProcessAbstract {
 
+    @Autowired
+    private CoursePublishService coursePublishService;
 
     /**
      * 课程发布处理任务
+     *
      * @throws Exception
      */
     @XxlJob("CoursePublishJobHandler")
@@ -36,6 +46,7 @@ public class CoursePublishTask extends MessageProcessAbstract {
      * @return
      */
     @Override
+    @Transactional
     public boolean execute(MqMessage mqMessage) {
         //从mqMessage中拿出课程id
         Long courseId = Long.valueOf(mqMessage.getBusinessKey1());
@@ -55,7 +66,6 @@ public class CoursePublishTask extends MessageProcessAbstract {
     private void saveRedisCache(MqMessage mqMessage, long courseId) {
 
     }
-
 
     //保存课程的索引信息 第二个阶段的任务
     private void saveCourseIndex(MqMessage mqMessage, long courseId) {
@@ -86,7 +96,12 @@ public class CoursePublishTask extends MessageProcessAbstract {
             log.debug("课程静态化已完成");
             return;
         }
-        //2:TODO 开始进行页面静态化处理, 将生成的html 存放到minio
+        //2:开始进行页面静态化处理, 将生成的html 存放到minio
+        File file = coursePublishService.generateCourseHtml(courseId);
+        if (file == null) {
+            XueChengPlusException.cast("生成静态页面失败！课程id:" + courseId);
+        }
+        coursePublishService.uploadCourseHtml(courseId, file);
 
         //3:将任务的处理状态设置为已完成
         mqMessageService.completedStageOne(taskId);

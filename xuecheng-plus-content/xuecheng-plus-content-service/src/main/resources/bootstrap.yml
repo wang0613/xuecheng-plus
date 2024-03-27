@@ -1,26 +1,33 @@
-spring:
-  application:
-    name: content-service #应用名-环境名-扩展名
-  cloud:
-    nacos:
-      server-addr: 192.168.101.65:8848
-      config:   #从nacos拉取配置
-        namespace: dev
-        group: xuecheng-plus-project
-        file-extension: yaml
-        extension-configs: # 扩展引用 content-service下的数据库文件
-          - data-id: content-service-${spring.profiles.active}.yaml
-            group: xuecheng-plus-project
-            refresh: true
-        shared-configs:  #nacos-config的公有配置 引入swagger和日志的配置文件
-          - data-id: swagger-${spring.profiles.active}.yaml
-            group: xuecheng-plus-common
-            refresh: true
-          - data-id: logging-${spring.profiles.active}.yaml
-            group: xuecheng-plus-common
-            refresh: true
-  profiles:
-    active: dev  # 环境名称
+#spring:
+#  application:
+#    name: content-service #应用名-环境名-扩展名
+#  cloud:
+#    nacos:
+#      server-addr: 192.168.101.65:8848
+#      discovery:
+#        namespace: dev
+#        group: xuecheng-plus-project
+#      config:   #从nacos拉取配置
+#        namespace: dev
+#        group: xuecheng-plus-project
+#        file-extension: yaml
+#        extension-configs: # 扩展引用 content-service下的数据库文件
+#          - data-id: content-service-${spring.profiles.active}.yaml
+#            group: xuecheng-plus-project
+#            refresh: true
+#        shared-configs:  #nacos-config的公有配置 引入swagger和日志的配置文件
+#          - data-id: swagger-${spring.profiles.active}.yaml
+#            group: xuecheng-plus-common
+#            refresh: true
+#          - data-id: logging-${spring.profiles.active}.yaml
+#            group: xuecheng-plus-common
+#            refresh: true
+#          - data-id: feign-${spring.profiles.active}.yaml
+#            group: xuecheng-plus-common
+#            refresh: true
+#
+#  profiles:
+#    active: dev  # 环境名称
 #  引入配置文件的形式有：
 #  1、以项目应用名方式引入 -content-service-dev.yaml
 #  2、以扩展配置文件方式引入- extension-configs:
